@@ -1,5 +1,7 @@
 package br.com.vini.projetointegrador;
 
+
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,13 +14,20 @@ import br.com.vini.projetointegrador.dominio.Cidade;
 import br.com.vini.projetointegrador.dominio.Cliente;
 import br.com.vini.projetointegrador.dominio.Endereco;
 import br.com.vini.projetointegrador.dominio.Estado;
+import br.com.vini.projetointegrador.dominio.Pagamento;
+import br.com.vini.projetointegrador.dominio.PagamentoComBoleto;
+import br.com.vini.projetointegrador.dominio.PagamentoComCartao;
+import br.com.vini.projetointegrador.dominio.Pedido;
 import br.com.vini.projetointegrador.dominio.Produto;
+import br.com.vini.projetointegrador.dominio.enums.EstadoPagamento;
 import br.com.vini.projetointegrador.dominio.enums.TipoCliente;
 import br.com.vini.projetointegrador.repository.CategoriaRepository;
 import br.com.vini.projetointegrador.repository.CidadeRepository;
 import br.com.vini.projetointegrador.repository.ClienteRepository;
 import br.com.vini.projetointegrador.repository.EnderecoRepository;
 import br.com.vini.projetointegrador.repository.EstadoRepository;
+import br.com.vini.projetointegrador.repository.PagamentoRepository;
+import br.com.vini.projetointegrador.repository.PedidoRepository;
 import br.com.vini.projetointegrador.repository.ProdutoRepository;
 
 @SpringBootApplication
@@ -43,7 +52,10 @@ public class ProjetoIntegradorApplication implements CommandLineRunner {
 		private ClienteRepository clienteRepository;
 		@Autowired
 		private EnderecoRepository enderecoRepository;
-		
+		@Autowired
+		private PedidoRepository pedidoRepository;
+		@Autowired
+		private PagamentoRepository pagamentoRepository;
 	@Override
 	public void run(String... args) throws Exception {
 	
@@ -89,6 +101,23 @@ public class ProjetoIntegradorApplication implements CommandLineRunner {
 		
 		clienteRepository.saveAll(Arrays.asList(cli1));
 		enderecoRepository.saveAll(Arrays.asList(e1,e2));
+		
+		SimpleDateFormat sdf = new  SimpleDateFormat("dd/MM/yyyy HH:mm");
+		
+		Pedido ped1 = new Pedido(null,sdf.parse("01/05/2020 22:27"),cli1,e1);
+		Pedido ped2 = new Pedido(null,sdf.parse("02/06/2019 22:27"),cli1,e2);
+		
+		Pagamento pagto1 = new PagamentoComCartao(null,EstadoPagamento.QUITADO,ped1,5);
+		ped1.setPagamento(pagto1);
+		Pagamento pagto2 = new PagamentoComBoleto(null,EstadoPagamento.PENDENTE,ped2,sdf.parse("18/05/2020 22:27"),null);
+		ped2.setPagamento(pagto2);
+		
+		cli1.getPedidos().addAll(Arrays.asList(ped1,ped2));
+		
+		pedidoRepository.saveAll(Arrays.asList(ped1,ped2));
+		pagamentoRepository.saveAll(Arrays.asList(pagto1,pagto2));
+		
+	
 	}
 
 }
