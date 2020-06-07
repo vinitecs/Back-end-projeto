@@ -11,6 +11,7 @@ import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import br.com.vini.projetointegrador.dominio.enums.EstadoPagamento;
 
@@ -19,6 +20,8 @@ import br.com.vini.projetointegrador.dominio.enums.EstadoPagamento;
 //e classe statica executa independente se possui um retorno
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
+//o @type é para identificar as super classes se é pagamento com cartão ou boleto 
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@type") 
 public abstract class Pagamento implements Serializable{
 	private static final long serialVersionUID = 1L;
 	

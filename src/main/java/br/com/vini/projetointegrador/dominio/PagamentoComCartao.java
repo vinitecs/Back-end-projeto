@@ -2,8 +2,11 @@ package br.com.vini.projetointegrador.dominio;
 
 import javax.persistence.Entity;
 
+import com.fasterxml.jackson.annotation.JsonTypeName;
+
 import br.com.vini.projetointegrador.dominio.enums.EstadoPagamento;
 @Entity
+@JsonTypeName("pagamentoComCartao")
 public class PagamentoComCartao extends Pagamento {
 	private static final long serialVersionUID = 1L;
 

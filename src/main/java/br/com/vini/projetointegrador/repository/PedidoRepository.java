@@ -8,4 +8,5 @@ import br.com.vini.projetointegrador.dominio.Pedido;
 @Repository
 public interface PedidoRepository extends JpaRepository<Pedido, Integer> {
 
+	
 }

@@ -4,48 +4,48 @@ package br.com.vini.projetointegrador.services.validation;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.servlet.HandlerMapping;
 
-import br.com.vini.projetointegrador.DTO.ClienteNewDTO;
+import br.com.vini.projetointegrador.DTO.ClienteDTO;
 import br.com.vini.projetointegrador.dominio.Cliente;
-import br.com.vini.projetointegrador.dominio.enums.TipoCliente;
 import br.com.vini.projetointegrador.repository.ClienteRepository;
 import br.com.vini.projetointegrador.resources.exception.FieldMessage;
-import br.com.vini.projetointegrador.services.validation.utils.BR;
 
-public class ClienteInsertValidator implements ConstraintValidator<ClienteInsert, ClienteNewDTO> {
+public class ClienteUpdateValidator implements ConstraintValidator<ClienteUpdate, ClienteDTO> {
+	
+	
+	@Autowired
+	private HttpServletRequest request;
 	
 	@Autowired 
 	ClienteRepository  repo;
 	@Override
-	public void initialize(ClienteInsert ann) {
+	public void initialize(ClienteUpdate ann) {
 		
 	}
 
 	@Override     
-	public boolean isValid(ClienteNewDTO objDto, ConstraintValidatorContext context) { 
-	 
+	public boolean isValid(ClienteDTO objDto, ConstraintValidatorContext context) { 
+	  
+		@SuppressWarnings("unchecked")
+		Map<String, String> map = (Map<String, String>)request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
 	        
+		Integer uriId =Integer.parseInt(map.get("id"));
+		
 		List<FieldMessage> list = new ArrayList<>();   
 		
 
-		if(objDto.getTipo().equals(TipoCliente.PESSOAFISICA.getCod()) && !BR.isValidCPF(objDto.getCpfOuCnpj())) {
-		
-			list.add(new FieldMessage("cpfOuCnpj", "CPF invalido"));
-		}
-		
-
-		if(objDto.getTipo().equals(TipoCliente.PESOAJURIDICA.getCod()) && !BR.isValidCNPJ(objDto.getCpfOuCnpj())) {
-		
-			list.add(new FieldMessage("cpfOuCnpj", "CPF invalido"));
-		}
+	
 		
 		Cliente aux = repo.findByEmail(objDto.getEmail());
-		if(aux != null) {
+		if(aux != null && aux.getId().equals(uriId)) {
 			list.add(new FieldMessage("email", "Email ja existente"));
 		}
 		// inclua os testes aqui, inserindo erros na lista 
