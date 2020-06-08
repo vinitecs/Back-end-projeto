@@ -55,7 +55,7 @@ public class DBService {
 	@Autowired
 	private ItemPedidoRepository itemPedidoRepository;
 
-	public void instatiateTestDatabase() throws ParseException {
+	public void instantiateTestDatabase() throws ParseException {
 
 	
 	
@@ -66,6 +66,8 @@ public class DBService {
 		Categoria cat5 = new  Categoria(null,"escritorio");
 		Categoria cat6 = new  Categoria(null,"livros");
 		Categoria cat7 = new  Categoria(null,"roupas");
+		Categoria cat8 = new  Categoria(null,"teste");
+		
 		
 		
 		Produto p1 = new Produto(null, "computador", 200.00);
@@ -103,7 +105,7 @@ public class DBService {
 		p3.getCategorias().addAll(Arrays.asList(cat7));
 		p3.getCategorias().addAll(Arrays.asList(cat7));
 		
-		categoriaRepository.saveAll(Arrays.asList(cat1,cat2,cat3,cat4,cat5,cat6,cat7));
+		categoriaRepository.saveAll(Arrays.asList(cat1,cat2,cat3,cat4,cat5,cat6,cat7,cat8));
 		produtoRepository.saveAll(Arrays.asList(p1,p2,p3,p4,p5,p6,p7,p8,p9,p10,p11));
 		
 		Estado est1 = new Estado(null, "minas gerais");
