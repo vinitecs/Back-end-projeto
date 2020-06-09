@@ -5,7 +5,7 @@ import org.springframework.mail.SimpleMailMessage;
 import br.com.vini.projetointegrador.dominio.Pedido;
 
 public interface EmailService {
-	void sendOderConfirmationEmail(Pedido obj);
+	void sendOrderConfirmationEmail(Pedido obj);
 	
 	void sendEmail(SimpleMailMessage msg);
 

@@ -1,0 +1,5 @@
+
+spring.profiles.active=dev
+
+default.sender= viniciusamalia@gmail.com
+default.recipient=viniciusamalia@gmail.com

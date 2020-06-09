@@ -11,7 +11,7 @@ public abstract class AbstractMailService implements EmailService {
 	@Value("${default.sender}")
 	private String sender;
 	@Override
-	public void sendOderConfirmationEmail(Pedido obj) {
+	public void sendOrderConfirmationEmail(Pedido obj) {
 		SimpleMailMessage sm = prepareSimpleMailMessageFromPedido(obj);
 		sendEmail(sm);
 	}
