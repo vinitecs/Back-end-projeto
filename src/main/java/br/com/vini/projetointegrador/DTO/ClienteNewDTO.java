@@ -31,6 +31,8 @@ public class ClienteNewDTO implements Serializable{
 	private String complemento;
 	private String bairro;
 	private String cep;
+	@NotEmpty(message = "preenchimento obrigatorio")
+	private String senha;
 	
 	private String telefone1;
 	private String telefone2;
@@ -40,6 +42,13 @@ public class ClienteNewDTO implements Serializable{
 	public ClienteNewDTO(){
 		
 	}
+	public String getSenha() {
+	return senha;
+}
+
+public void setSenha(String senha) {
+	this.senha = senha;
+}
 	public String getNome() {
 		return nome;
 	}
