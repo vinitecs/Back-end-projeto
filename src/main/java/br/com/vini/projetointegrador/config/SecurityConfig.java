@@ -19,13 +19,14 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import br.com.vini.projetointegrador.security.JWTAuthenticationFilter;
+import br.com.vini.projetointegrador.security.JWTAuthorizationFilter;
 import br.com.vini.projetointegrador.security.JWTUtil;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	@Autowired
-	private UserDetailsService userDetailService;
+	private UserDetailsService userDetailsService;
 	@Autowired
 	private Environment env;
 	
@@ -40,7 +41,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 			
 			"/produtos/**",
 			"/categorias/**",
-			"/clientes/**"
+			"/clientes/**",
+			
 	};
 	@Override
 	protected void configure(HttpSecurity http)throws Exception {
@@ -53,12 +55,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		.antMatchers(PUBLIC_MATCHERS).permitAll()
 		.anyRequest().authenticated();
 		http.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil));
+		http.addFilter(new JWTAuthorizationFilter(authenticationManager(), jwtUtil, userDetailsService));
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		
 	}
 	@Override
 	public void configure(AuthenticationManagerBuilder auth)throws Exception{
-		auth.userDetailsService(userDetailService).passwordEncoder(bCryptPasswordEncoder());
+		auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder());
 	}
 	@Bean
 	CorsConfigurationSource corsConfigurationSource() {
