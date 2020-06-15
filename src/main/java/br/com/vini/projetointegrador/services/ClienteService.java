@@ -18,26 +18,40 @@ import br.com.vini.projetointegrador.DTO.ClienteNewDTO;
 import br.com.vini.projetointegrador.dominio.Cidade;
 import br.com.vini.projetointegrador.dominio.Cliente;
 import br.com.vini.projetointegrador.dominio.Endereco;
+import br.com.vini.projetointegrador.dominio.enums.Perfil;
 import br.com.vini.projetointegrador.dominio.enums.TipoCliente;
+import br.com.vini.projetointegrador.repository.CidadeRepository;
 import br.com.vini.projetointegrador.repository.ClienteRepository;
 import br.com.vini.projetointegrador.repository.EnderecoRepository;
+import br.com.vini.projetointegrador.security.UserSS;
+import br.com.vini.projetointegrador.services.exception.AuthorizationException;
 import br.com.vini.projetointegrador.services.exception.DataIntegrityException;
 import br.com.vini.projetointegrador.services.exception.ObjectNotFoundException;
 
 @Service
 public class ClienteService {
 	@Autowired
-	ClienteRepository repo;
+	private ClienteRepository repo;
+	
 
 	
 	@Autowired
-	EnderecoRepository enderecoRepository;
+	private EnderecoRepository enderecoRepository;
 	
 	@Autowired
 	private BCryptPasswordEncoder pe; 
 	
+	
+	
+	
 
 	public Cliente find(Integer id) {
+		
+		UserSS user = UserService.authenticated();		
+		if (user == null || !user.hasRole(Perfil.ADMIN) && !id.equals(user.getId())){
+		throw new AuthorizationException("Acesso negado");
+		}
+		
 		Optional<Cliente> obj = repo.findById(id);
 		return obj.orElseThrow(() -> new ObjectNotFoundException(
 				"Objeto não encontrado! Id: " + id + ", Tipo: " + Cliente.class.getName()));

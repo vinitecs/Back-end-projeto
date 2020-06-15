@@ -49,8 +49,9 @@ public class Cliente implements Serializable{
 	
 	//FAZ COM QUE ELE GARANTA BUSCA DE PERFIS GARANTIDO 
 	
-	@CollectionTable(name="PERFIS")
+	
 	@ElementCollection(fetch = FetchType.EAGER)
+	@CollectionTable(name="PERFIS")
 	private Set<Integer> perfis = new HashSet<>();	
 	
 	public Cliente() {
@@ -65,6 +66,7 @@ public class Cliente implements Serializable{
 		this.cpfOuCnpj = cpfOuCnpj;
 		this.senha = senha;
 		this.tipo = (tipo == null)? null: tipo.getCod();
+		addPerfil(Perfil.CLIENTE);
 	}
 	 
 	public Set<Perfil> getPerfis()  {

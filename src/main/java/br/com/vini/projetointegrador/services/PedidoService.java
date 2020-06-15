@@ -6,8 +6,13 @@ import java.util.Optional;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
+import br.com.vini.projetointegrador.dominio.Categoria;
+import br.com.vini.projetointegrador.dominio.Cliente;
 import br.com.vini.projetointegrador.dominio.ItemPedido;
 import br.com.vini.projetointegrador.dominio.PagamentoComBoleto;
 import br.com.vini.projetointegrador.dominio.Pedido;
@@ -16,6 +21,8 @@ import br.com.vini.projetointegrador.repository.ClienteRepository;
 import br.com.vini.projetointegrador.repository.ItemPedidoRepository;
 import br.com.vini.projetointegrador.repository.PagamentoRepository;
 import br.com.vini.projetointegrador.repository.PedidoRepository;
+import br.com.vini.projetointegrador.security.UserSS;
+import br.com.vini.projetointegrador.services.exception.AuthorizationException;
 import br.com.vini.projetointegrador.services.exception.ObjectNotFoundException;
 
 @Service
@@ -73,6 +80,16 @@ public class PedidoService {
 		System.out.println(obj);
 		
 		return obj;
+	}
+	
+	public Page<Pedido> findPage(Integer page, Integer linesPerPage,String orderBy, String direction){
+		UserSS user =  UserService.authenticated();
+		if (user == null) {
+			throw new AuthorizationException("acesso negado");
+		}
+		PageRequest pageRequest = PageRequest.of(page,linesPerPage,Direction.valueOf(direction),orderBy);
+		Cliente cliente = clienteService.find(user.getId());
+		return repo.findByCliente(cliente, pageRequest);
 	}
 }
 

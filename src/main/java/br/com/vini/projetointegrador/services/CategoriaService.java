@@ -12,8 +12,8 @@ import org.springframework.stereotype.Service;
 
 import br.com.vini.projetointegrador.DTO.CategoriaDTO;
 import br.com.vini.projetointegrador.dominio.Categoria;
-
 import br.com.vini.projetointegrador.repository.CategoriaRepository;
+import br.com.vini.projetointegrador.security.UserSS;
 import br.com.vini.projetointegrador.services.exception.DataIntegrityException;
 import br.com.vini.projetointegrador.services.exception.ObjectNotFoundException;
 
@@ -22,6 +22,8 @@ public class CategoriaService {
 	@Autowired
 	CategoriaRepository repo;
 
+	UserSS user = UserService.authenticated();
+	
 	
 
 	public Categoria find(Integer id) {
