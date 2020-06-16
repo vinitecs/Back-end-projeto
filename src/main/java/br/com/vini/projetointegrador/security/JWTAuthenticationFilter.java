@@ -42,6 +42,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 	                .readValue(req.getInputStream(), CredenciaisDTO.class);
 	        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(creds.getEmail(), creds.getSenha(), new ArrayList<>());
 	        Authentication auth = authenticationManager.authenticate(authToken);
+	        
 	        return auth;
 
 		}catch (IOException e) {
@@ -57,6 +58,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 		String username = ((UserSS) auth.getPrincipal()).getUsername();
         String token = jwtUtil.generateToken(username);
         res.addHeader("Authorization", "Bearer " + token);
+        res.addHeader("acess-control-expose-header","Authtorization");
 	}
 
 	private class JWTAuthenticationFailureHandler implements AuthenticationFailureHandler {
