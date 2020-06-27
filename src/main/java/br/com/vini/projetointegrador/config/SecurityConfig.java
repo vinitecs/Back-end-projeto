@@ -51,6 +51,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 			
 			
 			"/clientes/**",
+			"auth/refresh_token",
 			"/auth/forgot/**"
 			
 	};
