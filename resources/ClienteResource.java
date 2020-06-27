@@ -17,30 +17,38 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
-import br.com.vini.projetointegrador.DTO.CategoriaDTO;
-import br.com.vini.projetointegrador.dominio.Categoria;
-import br.com.vini.projetointegrador.services.CategoriaService;
+import br.com.vini.projetointegrador.DTO.ClienteDTO;
+import br.com.vini.projetointegrador.DTO.ClienteNewDTO;
+import br.com.vini.projetointegrador.dominio.Cliente;
+import br.com.vini.projetointegrador.services.ClienteService;
 
 @RestController
-@RequestMapping(value="/categorias")
-public class CategoriaResource {
+@RequestMapping(value="/clientes")
+public class ClienteResource {
 		
 		@Autowired
-		CategoriaService service;
-		
+		ClienteService service;
+		 @PreAuthorize("hasAnyRole('ADMIN')") 
 		@RequestMapping(value="/{id}",method = RequestMethod.GET)
-		public ResponseEntity<Categoria> find(@PathVariable Integer id){
+		public ResponseEntity<Cliente> find(@PathVariable Integer id){
 			
-			Categoria obj = service.find(id);			
+			Cliente obj = service.find(id);			
 			return ResponseEntity.ok().body(obj);
 			
 			}
-		
-		@PreAuthorize("hasAnyRole('ADMIN')") 
+		 
+		 
+			@RequestMapping(value="/email",method = RequestMethod.GET)
+			public ResponseEntity<Cliente> find(@RequestParam(value="value") String email){
+				
+				Cliente obj = service.findByEmail(email);			
+				return ResponseEntity.ok().body(obj);
+				
+				}
+		 @PreAuthorize("hasAnyRole('ADMIN')") 
 		@RequestMapping(method = RequestMethod.POST)
-		public ResponseEntity<Void> insert(@Valid  @RequestBody CategoriaDTO objDto){
-			Categoria obj = service.fromDTO(objDto);
+		public ResponseEntity<Void> insert(@Valid  @RequestBody ClienteNewDTO objDto){
+			Cliente obj = service.fromDto(objDto);
 			obj = service.insert(obj);
 			
 			URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
@@ -48,11 +56,10 @@ public class CategoriaResource {
 			return ResponseEntity.created(uri).build();
 		}
 		
-		 @PreAuthorize("hasAnyRole('ADMIN')") 
 		@RequestMapping(value="/{id}",method = RequestMethod.PUT)
-		public ResponseEntity<Void>  update(@Valid @RequestBody CategoriaDTO objDto, @PathVariable Integer id ){
+		public ResponseEntity<Void>  update(@Valid @RequestBody ClienteDTO objDto, @PathVariable Integer id ){
 			
-			Categoria obj = service.fromDTO(objDto);
+			Cliente obj = service.fromDTO(objDto);
 			obj.setId(id);	
 			obj = service.update(obj);
 			
@@ -61,22 +68,22 @@ public class CategoriaResource {
 		
 		 @PreAuthorize("hasAnyRole('ADMIN')") 
 		@RequestMapping(value="/{id}",method = RequestMethod.DELETE)
-		public ResponseEntity<Categoria> delete(@PathVariable Integer id){
+		public ResponseEntity<Cliente> delete(@PathVariable Integer id){
 			service.delete(id);
 			return ResponseEntity.noContent().build();
 		}
 		
 		@RequestMapping(method = RequestMethod.GET)
-		public ResponseEntity<List<CategoriaDTO>> findAll(){
+		public ResponseEntity<List<ClienteDTO>> findAll(){
 			
-			List<Categoria> list = service.findAll();
-			List<CategoriaDTO> listDto = list.stream().map(obj -> new CategoriaDTO(obj)).collect(Collectors.toList());
+			List<Cliente> list = service.findAll();
+			List<ClienteDTO> listDto = list.stream().map(obj -> new ClienteDTO(obj)).collect(Collectors.toList());
 			
 			return ResponseEntity.ok().body(listDto);
 			
 			}
 		@RequestMapping(value="/page",method = RequestMethod.GET)
-		public ResponseEntity<Page<CategoriaDTO>> findPage(
+		public ResponseEntity<Page<ClienteDTO>> findPage(
 				@RequestParam(value="page",defaultValue="0")Integer page,
 				@RequestParam(value="linesPerPage",defaultValue="24")Integer linesPerPage,
 				@RequestParam(value="orderBy",defaultValue="ASC")String orderBy, 
@@ -84,8 +91,8 @@ public class CategoriaResource {
 				
 				){
 			
-			Page<Categoria> list = service.findPage(page,linesPerPage,orderBy,direction);
-			Page<CategoriaDTO> listDto = list.map(obj -> new CategoriaDTO(obj));
+			Page<Cliente> list = service.findPage(page,linesPerPage,orderBy,direction);
+			Page<ClienteDTO> listDto = list.map(obj -> new ClienteDTO(obj));
 			
 			return ResponseEntity.ok().body(listDto);
 			

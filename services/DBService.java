@@ -214,12 +214,12 @@ public class DBService {
 		
 		Cliente cli1 = new Cliente(null,"maria silva","viniciusamalia@gmail.com","35173114",TipoCliente.PESSOAFISICA,pe.encode("123"));
 		cli1.getTelefones().addAll(Arrays.asList("35189405","35361114"));
-		cli1.addPerfil(Perfil.ADMIN);
+		
 	
 		
 		Cliente cli2 = new Cliente(null,"ana","llucaseluan69@gmail.com","04680247193",TipoCliente.PESSOAFISICA,pe.encode("123"));
 		cli2.getTelefones().addAll(Arrays.asList("981069013","35361114"));
-		
+		cli2.addPerfil(Perfil.ADMIN);
 		
 		
 		Endereco e1 = new Endereco(null,"Rua Flores","300","apto 303","Jardim","7459036",cli1,c1);

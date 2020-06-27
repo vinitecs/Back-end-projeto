@@ -7,8 +7,6 @@ import java.util.List;
 
 public class URL {
 	
-	//Sistema de metodo de busca de um metodo estatico
-	
 	public static String decodeParam(String s) {
 		try {
 			return URLDecoder.decode(s,"UTF-8");

@@ -23,12 +23,14 @@ import br.com.vini.projetointegrador.dominio.Cliente;
 import br.com.vini.projetointegrador.services.ClienteService;
 
 @RestController
+//criar uma requisição Http
 @RequestMapping(value="/clientes")
 public class ClienteResource {
 		
 		@Autowired
 		ClienteService service;
-		 @PreAuthorize("hasAnyRole('ADMIN')") 
+		
+		
 		@RequestMapping(value="/{id}",method = RequestMethod.GET)
 		public ResponseEntity<Cliente> find(@PathVariable Integer id){
 			
@@ -45,6 +47,7 @@ public class ClienteResource {
 				return ResponseEntity.ok().body(obj);
 				
 				}
+			
 		 @PreAuthorize("hasAnyRole('ADMIN')") 
 		@RequestMapping(method = RequestMethod.POST)
 		public ResponseEntity<Void> insert(@Valid  @RequestBody ClienteNewDTO objDto){
@@ -72,7 +75,8 @@ public class ClienteResource {
 			service.delete(id);
 			return ResponseEntity.noContent().build();
 		}
-		
+		//listagem completa cliente
+		 @PreAuthorize("hasAnyRole('ADMIN')") 
 		@RequestMapping(method = RequestMethod.GET)
 		public ResponseEntity<List<ClienteDTO>> findAll(){
 			
@@ -82,6 +86,9 @@ public class ClienteResource {
 			return ResponseEntity.ok().body(listDto);
 			
 			}
+		
+		//paginação personalizada
+		 @PreAuthorize("hasAnyRole('ADMIN')") 
 		@RequestMapping(value="/page",method = RequestMethod.GET)
 		public ResponseEntity<Page<ClienteDTO>> findPage(
 				@RequestParam(value="page",defaultValue="0")Integer page,
