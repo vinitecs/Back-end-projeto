@@ -31,7 +31,8 @@ public class AuthResource {
 		UserSS user = UserService.authenticated();
 		String token = jwtUtil.generateToken(user.getUsername());
 		response.addHeader("Authorization", "Bearer " + token);
-		response.addHeader("acess-control-expose-header","Authtorization");
+		response.addHeader("access-control-expose-headers","Authorization");
+
 		return ResponseEntity.noContent().build();
 	}
 	@RequestMapping(value = "/forgot", method = RequestMethod.POST)
