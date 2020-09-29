@@ -12,7 +12,7 @@
 	<groupId>br.com.vini.pi</groupId>
 	<artifactId>cursojava</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>ProjetoIntegrador</name>
+	
 	<description>iniciospring</description>
 
 	<properties>
