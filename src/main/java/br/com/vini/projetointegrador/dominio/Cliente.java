@@ -34,6 +34,7 @@ public class Cliente implements Serializable{
 	@Column(unique = true)
 	private String email;
 	private String cpfOuCnpj;
+	@JsonIgnore
 	private Integer tipo;
 	private String senha;
 	@OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
@@ -134,7 +135,7 @@ public void addPerfil(Perfil perfil) {
 	public TipoCliente getTipo() {
 		return TipoCliente.toEnum(tipo);
 	}
-
+	
 	public void setTipo(TipoCliente tipo) {
 		this.tipo = tipo.getCod();
 	}

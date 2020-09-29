@@ -214,6 +214,8 @@ public class DBService {
 		
 		Cliente cli1 = new Cliente(null,"maria silva","viniciusamalia@gmail.com","35173114",TipoCliente.PESSOAFISICA,pe.encode("123"));
 		cli1.getTelefones().addAll(Arrays.asList("35189405","35361114"));
+		cli1.addPerfil(Perfil.ADMIN);
+
 		
 	
 		

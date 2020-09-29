@@ -28,7 +28,7 @@ public class ClienteResource {
 		
 		@Autowired
 		ClienteService service;
-		 @PreAuthorize("hasAnyRole('ADMIN')") 
+		 
 		@RequestMapping(value="/{id}",method = RequestMethod.GET)
 		public ResponseEntity<Cliente> find(@PathVariable Integer id){
 			
@@ -45,7 +45,7 @@ public class ClienteResource {
 				return ResponseEntity.ok().body(obj);
 				
 				}
-		 @PreAuthorize("hasAnyRole('ADMIN')") 
+	
 		@RequestMapping(method = RequestMethod.POST)
 		public ResponseEntity<Void> insert(@Valid  @RequestBody ClienteNewDTO objDto){
 			Cliente obj = service.fromDto(objDto);
@@ -86,7 +86,7 @@ public class ClienteResource {
 		public ResponseEntity<Page<ClienteDTO>> findPage(
 				@RequestParam(value="page",defaultValue="0")Integer page,
 				@RequestParam(value="linesPerPage",defaultValue="24")Integer linesPerPage,
-				@RequestParam(value="orderBy",defaultValue="ASC")String orderBy, 
+				@RequestParam(value="orderBy",defaultValue="name")String orderBy, 
 				@RequestParam(value="direction",defaultValue="ASC")String direction
 				
 				){
